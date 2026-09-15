@@ -7,11 +7,13 @@ const orderSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+
     items: [
       {
         product: {
@@ -29,6 +31,7 @@ const orderSchema = new mongoose.Schema(
         image: String,
       },
     ],
+
     shippingAddress: {
       fullName: {
         type: String,
@@ -59,16 +62,19 @@ const orderSchema = new mongoose.Schema(
         required: true,
       },
     },
+
     totalAmount: {
       type: Number,
       required: true,
       min: 0,
     },
+
     status: {
       type: String,
       enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
       default: "Pending",
     },
+
     adminNotes: [
       {
         note: String,
@@ -88,13 +94,18 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
-// Generate order ID before saving
-orderSchema.pre("save", async function (next) {
+// Generate order ID before validation
+orderSchema.pre("validate", async function (next) {
   if (!this.orderId) {
     const timestamp = Date.now().toString(36);
-    const random = Math.random().toString(36).substring(2, 7).toUpperCase();
+    const random = Math.random()
+      .toString(36)
+      .substring(2, 7)
+      .toUpperCase();
+
     this.orderId = `ORD-${timestamp}-${random}`;
   }
+
   next();
 });
 
