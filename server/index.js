@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 8000;
 // Middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: "https://zova-ecommerce.vercel.app",
     credentials: true,
   })
 );
